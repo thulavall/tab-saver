@@ -59,15 +59,14 @@ function renderSetupList(setupNames) {
 
   setupNames.forEach(name => {
     const listItem = document.createElement('li');
-    listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+    listItem.classList.add('list-group-item', 'btn', 'd-flex', 'justify-content-between', 'align-items-center');
     listItem.textContent = name;
-
+    
     const deleteButton = document.createElement('button');
-    deleteButton.classList.add('btn', 'btn-sm', 'btn-danger');
-    const trashIcon = document.createElement('i');
-    trashIcon.classList.add('bi', 'bi-trash-fill');
+    deleteButton.classList.add('btn', 'btn-sm');
+    const trashIcon = getTrashIcon();
     deleteButton.appendChild(trashIcon);
-
+    
     // Inside the forEach loop:
     deleteButton.addEventListener('click', (event) => {
       event.stopPropagation(); // Prevents triggering the loadTabs click event
@@ -75,9 +74,9 @@ function renderSetupList(setupNames) {
         deleteSetup(name);
       }
     });
-
+    
     listItem.appendChild(deleteButton); // Add the button
-
+    
     // Add click event to load the setup
     listItem.addEventListener('click', () => {
       loadTabs(name);
@@ -121,6 +120,29 @@ function displayMessage(message) {
 function deleteSetup(setupName) {
   chrome.storage.local.remove(setupName);
   displaySavedSetups(); // Refresh the list
+}
+
+function getTrashIcon() {
+  // 1. Create the SVG element
+  const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
+  // 2. Set attributes
+  svgIcon.setAttribute('width', '16'); 
+  svgIcon.setAttribute('height', '16'); 
+  svgIcon.setAttribute('fill', 'currentColor'); 
+  svgIcon.setAttribute('class', 'bi bi-trash-fill'); 
+  svgIcon.setAttribute('viewBox', '0 0 16 16');
+
+  // 3. Create the 'path' element
+  const pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  pathElement.setAttribute('d', 'M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0');
+
+  // 4. Append the 'path' to the SVG
+  svgIcon.appendChild(pathElement);
+
+  // 5. Insert into the document
+  const targetElement = document.getElementById('your-target-element-id'); 
+  return svgIcon;
 }
 
 // Initial display on popup open
