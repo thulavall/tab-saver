@@ -59,7 +59,10 @@ function renderSetupList(setupNames) {
 
   setupNames.forEach(name => {
     const listItem = document.createElement('li');
-    listItem.classList.add('list-group-item', 'btn', 'd-flex', 'justify-content-between', 'align-items-center');
+    listItem.id = "listItem";
+    listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+    listItem.style.cursor = 'pointer'; // Change cursor to pointer on hover
+    // listItem.style.color = "color: blue";
     listItem.textContent = name;
     
     const deleteButton = document.createElement('button');
