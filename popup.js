@@ -3,10 +3,10 @@ document.getElementById('saveTabs').addEventListener('click', saveTabs);
 function saveTabs() {
   let setupName = prompt("Enter a name for this setup:");
   if (setupName) {
-    chrome.tabs.query({ currentWindow: true }, function(tabs) {
+    chrome.tabs.query({ currentWindow: true }, function (tabs) {
       const tabUrls = tabs.map(tab => tab.url);
-      chrome.storage.local.get(null, function(data) { // Get all stored data
-        let savedSetups = data || {}; 
+      chrome.storage.local.get(null, function (data) { // Get all stored data
+        let savedSetups = data || {};
         savedSetups[setupName] = tabUrls;
         chrome.storage.local.set(savedSetups);
       });
@@ -18,16 +18,17 @@ function saveTabs() {
 }
 
 function loadTabs(setupName) {
-  chrome.storage.local.get(null, function(data) {
+  chrome.storage.local.get(null, function (data) {
     let setupNames = Object.keys(data);
     if (setupNames.length > 0) {
       // let setupName = prompt("Choose a setup to load:", setupNames.join(", "));
       if (setupName && data[setupName]) {
 
         // Create a new window
-        chrome.windows.create(function(window) {
+        chrome.windows.create(function (window) {
           // Load tabs in the new window
           data[setupName].forEach(url => chrome.tabs.create({ windowId: window.id, url }));
+          chrome.tabs.remove(window.tabs[0].id); // Close the initial tab
         });
       }
     } else {
@@ -41,7 +42,7 @@ function displaySavedSetups() {
   deleteElement(prevList);
   const prevMessage = document.getElementById("messageCard");
   deleteElement(prevMessage);
-  chrome.storage.local.get(null, function(data) {
+  chrome.storage.local.get(null, function (data) {
     let setupNames = Object.keys(data);
     if (setupNames.length > 0) {
       renderSetupList(setupNames);
@@ -64,22 +65,22 @@ function renderSetupList(setupNames) {
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('btn', 'btn-sm', 'btn-danger');
     const trashIcon = document.createElement('i');
-    trashIcon.classList.add('bi', 'bi-trash-fill'); 
+    trashIcon.classList.add('bi', 'bi-trash-fill');
     deleteButton.appendChild(trashIcon);
 
     // Inside the forEach loop:
-    deleteButton.addEventListener('click', (event) => { 
+    deleteButton.addEventListener('click', (event) => {
       event.stopPropagation(); // Prevents triggering the loadTabs click event
       if (confirm(`Are you sure you want to delete ${name}?`)) {
-          deleteSetup(name); 
-      } 
+        deleteSetup(name);
+      }
     });
-    
+
     listItem.appendChild(deleteButton); // Add the button
 
     // Add click event to load the setup
     listItem.addEventListener('click', () => {
-      loadTabs(name); 
+      loadTabs(name);
     });
 
     listContainer.appendChild(listItem);
@@ -87,7 +88,7 @@ function renderSetupList(setupNames) {
 
   // Replace existing previous list with the new list 
   const contentArea = document.querySelector('.container.mt-4');
-  contentArea.appendChild(listContainer); 
+  contentArea.appendChild(listContainer);
 }
 
 function deleteElement(element) {
