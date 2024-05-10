@@ -26,7 +26,7 @@
 
 ## Notes
 
-* **Temporary Installation:**  This installation method clears when you close the browser. For permanent installation, you'll need to package the extension.
+* **Temporary Installation:** For permanent installation, you'll need to package the extension.
 * **Updates:** You'll need to manually reinstall after making any changes to the code.
 
 ## Troubleshooting
