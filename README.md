@@ -4,7 +4,7 @@
 
 **Prerequisites**
 
-* Chrome-based Browser of you choice (Chrome, Brave, Edge, etc.)
+* Chrome-based Browser of your choice (Chrome, Brave, Edge, etc.)
 * A downloaded and unzipped copy of this extension's folder.
 
 **Instructions**
