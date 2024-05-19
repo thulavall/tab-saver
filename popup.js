@@ -107,7 +107,8 @@ function displayMessage(message) {
 
   const cardBody = document.createElement('div'); // Create a card body
   cardBody.classList.add('card-body');
-
+  cardBody.style = "color: black";
+  
   const messageText = document.createElement('p'); // Create a paragraph element for the message
   messageText.textContent = message; // Set the text content of the paragraph
   messageText.classList.add('text-center'); // Add the text-center class
